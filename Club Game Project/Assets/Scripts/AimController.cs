@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class AimController : MonoBehaviour
 {
-    [SerializeField] private bool cursorIsVisible;
-
     private GameObject player; // Used in this script to grab the players location
 
     private Vector2 relativeLocation; // Calculates the local position of the cursor around the player
@@ -16,9 +14,6 @@ public class AimController : MonoBehaviour
     {
         // assign the player gameobject. IMPORTANT: Do not change the player gameobject name unless you also change the name here
         player = GameObject.Find("Player");
-
-        // on begin play, cursor will be invisible. Toggle in inspector during play to see the cursor
-        cursorIsVisible = Cursor.visible = false; 
     }
 
     void Update()
