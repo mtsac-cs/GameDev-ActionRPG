@@ -13,12 +13,6 @@ using UnityEngine;
 
 public class Pause : MonoBehaviour
 {
-    private void Awake()
-    {
-        // cursor will be confined to the game window indefinitely
-        Cursor.lockState = CursorLockMode.Confined;
-    }
-
     private void Start()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f && Cursor.visible == false)

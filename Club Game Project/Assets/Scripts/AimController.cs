@@ -1,33 +1,24 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AimController : MonoBehaviour
 {
-    private GameObject player; // Used in this script to grab the players location
+    private Vector3 mousePos;
 
-    private Vector2 relativeLocation; // Calculates the local position of the cursor around the player
-
-    private float angle; // the angle that the cursor is at with the player being at the origin
-
-    void Start()
+    private void Awake()
     {
-        // assign the player gameobject. IMPORTANT: Do not change the player gameobject name unless you also change the name here
-        player = GameObject.Find("Player");
+        // Cursor will be confined to the game window indefinitely
+        Cursor.lockState = CursorLockMode.Confined;
     }
-
     void Update()
     {
-        // Subtracts the player position from the mouse position to get the local position of the cursor
-        relativeLocation = Input.mousePosition - Camera.main.WorldToScreenPoint(player.transform.position); 
+        // Grabs all the axis positions of the mouse, subtracts the z position by itself to get 0, and adds 1 to the z position in order to show the reticle infront of the screen
+        mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, Mathf.Abs(Input.mousePosition.z + 1));
 
-        // Finds the tan length of the y and x vectors, converts it to degrees from radians, and subtracts 90 to make the above-player-head position equal 0 degrees
-        angle = (float)Mathf.Atan2(relativeLocation.y, relativeLocation.x) * Mathf.Rad2Deg - 90; // 
-
-        // takes itself and divides by 90, rounds to the nearest integer, and times by 90
-        angle = Mathf.RoundToInt(angle / 90) * 90;
-
-        // rotates the object around the parent object at perfect 90 degree angle increments
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        // Transforms the attached game object from screen space to world space, but because it uses the cameras z position which is at -1, the z axis of the reticle is at -1, therefore it will not 
+        // show up in the game by default. This is why above we zeroed out the z position of the mouse, and added 1
+        transform.position = Camera.main.ScreenToWorldPoint(mousePos);
     }
 }
